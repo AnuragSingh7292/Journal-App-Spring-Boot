@@ -1,0 +1,21 @@
+##spring.application.name=Employees App
+##spring.data.mongodb.uri=mongodb+srv://anuragkumar180:khuljasimsim180@cluster0.znofi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+##spring.data.mongodb.database=employeedb
+##spring.data.mongodb.auto-index-creation=true
+##spring.main.allow-circular-references=true
+#
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://anuragkumar180:khuljasimsim180@cluster0.znofi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      database: journaldb
+      auto-index-creation: true
+  main:
+    allow-circular-references: true
+
+
+#server:
+#  port: 8080
+#  servlet:
+#    context-path: /employe
+
