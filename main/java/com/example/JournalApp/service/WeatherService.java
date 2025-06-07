@@ -12,10 +12,6 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class WeatherService {
 
-    // hardcoded
-//    private static final String apiKey = "9ea33fc4b42f6101f239144bbcf46636";
-//    @Value("${weather.api.key}") // its coming from the application.yml
-//    private String apiKey;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -23,14 +19,6 @@ public class WeatherService {
     @Autowired
     private AppCache appCache;
 
-    // manualy doing
-//    public WeatherResponse getWeather1(String city) {
-//        String apiURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey;
-//
-//        ResponseEntity<WeatherResponse> response =  restTemplate.exchange(apiURL, HttpMethod.GET, null, WeatherResponse.class);
-//        WeatherResponse body =  response.getBody();
-//        return body;
-//    }
 
 //    by using the  app cache memory
     public WeatherResponse getWeather(String city) {
