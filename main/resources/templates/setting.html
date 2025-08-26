@@ -1,0 +1,385 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Account Settings</title>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">-->
+<!--    <link th:href="@{/css/setting.css}" rel="stylesheet">-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="settings-container">-->
+<!--    <div class="settings-header">-->
+<!--        <h1><i class="fas fa-cog me-2"></i>Account Settings</h1>-->
+<!--        <p>Manage your account preferences and settings</p>-->
+<!--    </div>-->
+
+<!--    <div class="settings-content">-->
+<!--        <div class="settings-sidebar">-->
+<!--            <ul class="settings-menu">-->
+<!--                <li><a href="#profile" class="active" onclick="showSection('profile')"><i class="fas fa-user"></i> Profile</a></li>-->
+<!--                <li><a href="#security" onclick="showSection('security')"><i class="fas fa-shield-alt"></i> Security</a></li>-->
+<!--                <li><a href="#notifications" onclick="showSection('notifications')"><i class="fas fa-bell"></i> Notifications</a></li>-->
+<!--                <li><a href="#privacy" onclick="showSection('privacy')"><i class="fas fa-lock"></i> Privacy</a></li>-->
+<!--                <li><a href="#preferences" onclick="showSection('preferences')"><i class="fas fa-palette"></i> Preferences</a></li>-->
+<!--                <li><a href="/dashboard" th:href="@{/dashboard}"><i class="fas fa-arrow-left"></i> Back to Dashboard</a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
+
+<!--        <div class="settings-main">-->
+<!--            &lt;!&ndash; Profile Section &ndash;&gt;-->
+<!--            <div id="profile" class="settings-section active">-->
+<!--                <h2 class="section-title">Profile Information</h2>-->
+
+<!--                <div class="form-card">-->
+<!--                    <div class="d-flex align-items-center mb-4">-->
+<!--                        <div class="avatar-upload me-4">-->
+<!--                            <img th:src="${user.avatarUrl} ?: 'Journal/images/default-avatar.png'" alt="Avatar" class="profile-avatar">-->
+<!--                            <div class="avatar-overlay">-->
+<!--                                <i class="fas fa-camera"></i> Change-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <h3 th:text="${user.fullName}">John Doe</h3>-->
+<!--                            <p class="text-muted" th:text="${user.email}">johndoe@example.com</p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <form th:action="@{/profile/update}" method="post">-->
+<!--                        <div class="row mb-3">-->
+<!--                            <div class="col-md-6">-->
+<!--                                <label for="firstName" class="form-label">First Name</label>-->
+<!--                                <input type="text" class="form-control" id="firstName" th:value="${user.firstName}" required>-->
+<!--                            </div>-->
+<!--                            <div class="col-md-6">-->
+<!--                                <label for="lastName" class="form-label">Last Name</label>-->
+<!--                                <input type="text" class="form-control" id="lastName" th:value="${user.lastName}" required>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+<!--                        <div class="mb-3">-->
+<!--                            <label for="email" class="form-label">Email Address</label>-->
+<!--                            <input type="email" class="form-control" id="email" th:value="${user.email}" required>-->
+<!--                        </div>-->
+
+<!--                        <div class="mb-3">-->
+<!--                            <label for="bio" class="form-label">Bio</label>-->
+<!--                            <textarea class="form-control" id="bio" rows="3" th:text="${user.bio}">A short bio about yourself...</textarea>-->
+<!--                        </div>-->
+
+<!--                        <button type="submit" class="btn btn-primary">Update Profile</button>-->
+<!--                    </form>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Security Section &ndash;&gt;-->
+<!--            <div id="security" class="settings-section">-->
+<!--                <h2 class="section-title">Security Settings</h2>-->
+
+<!--                <div class="form-card">-->
+<!--                    <h3>Change Password</h3>-->
+<!--                    <form th:action="@{/change-password}" method="post" id="changePasswordForm">-->
+<!--                        <div class="mb-3">-->
+<!--                            <label for="currentPassword" class="form-label">Current Password</label>-->
+<!--                            <div class="password-input-container">-->
+<!--                                <input type="password" class="form-control" id="currentPassword" name="oldPassword" required>-->
+<!--                                <button type="button" class="toggle-password" onclick="togglePassword('currentPassword')">-->
+<!--                                    <i class="fas fa-eye"></i>-->
+<!--                                </button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+<!--                        <div class="mb-3">-->
+<!--                            <label for="newPassword" class="form-label">New Password</label>-->
+<!--                            <div class="password-input-container">-->
+<!--                                <input type="password" class="form-control" id="newPassword" name="newPassword" required>-->
+<!--                                <button type="button" class="toggle-password" onclick="togglePassword('newPassword')">-->
+<!--                                    <i class="fas fa-eye"></i>-->
+<!--                                </button>-->
+<!--                            </div>-->
+<!--                            <div class="form-text">Password must be at least 8 characters with uppercase, lowercase, number, and special character.</div>-->
+<!--                        </div>-->
+
+<!--                        <div class="mb-3">-->
+<!--                            <label for="confirmPassword" class="form-label">Confirm New Password</label>-->
+<!--                            <div class="password-input-container">-->
+<!--                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>-->
+<!--                                <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')">-->
+<!--                                    <i class="fas fa-eye"></i>-->
+<!--                                </button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+<!--                        <button type="submit" class="btn btn-primary">Change Password</button>-->
+<!--                    </form>-->
+<!--                </div>-->
+
+<!--                <div class="form-card">-->
+<!--                    <h3>Two-Factor Authentication</h3>-->
+<!--                    <p>Add an extra layer of security to your account by enabling two-factor authentication.</p>-->
+<!--                    <div class="form-check form-switch">-->
+<!--                        <input class="form-check-input" type="checkbox" id="twoFactorToggle">-->
+<!--                        <label class="form-check-label" for="twoFactorToggle">Enable Two-Factor Authentication</label>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="form-card">-->
+<!--                    <h3>Active Sessions</h3>-->
+<!--                    <p>You're currently logged in on these devices. Revoke any sessions that you don't recognize.</p>-->
+<!--                    <div class="session-item border-bottom py-3">-->
+<!--                        <div class="d-flex justify-content-between">-->
+<!--                            <div>-->
+<!--                                <strong>Chrome on Windows</strong>-->
+<!--                                <p class="mb-0 text-muted">New York, USA • Last active: 2 hours ago</p>-->
+<!--                            </div>-->
+<!--                            <button class="btn btn-sm btn-outline-danger">Revoke</button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="session-item py-3">-->
+<!--                        <div class="d-flex justify-content-between">-->
+<!--                            <div>-->
+<!--                                <strong>Safari on iPhone</strong>-->
+<!--                                <p class="mb-0 text-muted">This device • Last active: Now</p>-->
+<!--                            </div>-->
+<!--                            <button class="btn btn-sm btn-outline-danger">Revoke</button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Notifications Section &ndash;&gt;-->
+<!--            <div id="notifications" class="settings-section">-->
+<!--                <h2 class="section-title">Notification Preferences</h2>-->
+
+<!--                <div class="form-card">-->
+<!--                    <h3>Email Notifications</h3>-->
+
+<!--                    <div class="notification-item">-->
+<!--                        <div>-->
+<!--                            <strong>Security Alerts</strong>-->
+<!--                            <p class="mb-0">Important notifications about your account security</p>-->
+<!--                        </div>-->
+<!--                        <div class="form-check form-switch">-->
+<!--                            <input class="form-check-input" type="checkbox" id="securityAlerts" checked>-->
+<!--                            <label class="form-check-label" for="securityAlerts"></label>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="notification-item">-->
+<!--                        <div>-->
+<!--                            <strong>Product Updates</strong>-->
+<!--                            <p class="mb-0">News about new features and improvements</p>-->
+<!--                        </div>-->
+<!--                        <div class="form-check form-switch">-->
+<!--                            <input class="form-check-input" type="checkbox" id="productUpdates" checked>-->
+<!--                            <label class="form-check-label" for="productUpdates"></label>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="notification-item">-->
+<!--                        <div>-->
+<!--                            <strong>Marketing Emails</strong>-->
+<!--                            <p class="mb-0">Tips, offers, and promotional content</p>-->
+<!--                        </div>-->
+<!--                        <div class="form-check form-switch">-->
+<!--                            <input class="form-check-input" type="checkbox" id="marketingEmails">-->
+<!--                            <label class="form-check-label" for="marketingEmails"></label>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="form-card">-->
+<!--                    <h3>Push Notifications</h3>-->
+
+<!--                    <div class="notification-item">-->
+<!--                        <div>-->
+<!--                            <strong>New Messages</strong>-->
+<!--                            <p class="mb-0">Get notified when you receive new messages</p>-->
+<!--                        </div>-->
+<!--                        <div class="form-check form-switch">-->
+<!--                            <input class="form-check-input" type="checkbox" id="newMessages" checked>-->
+<!--                            <label class="form-check-label" for="newMessages"></label>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="notification-item">-->
+<!--                        <div>-->
+<!--                            <strong>Reminders</strong>-->
+<!--                            <p class="mb-0">Daily and weekly reminders</p>-->
+<!--                        </div>-->
+<!--                        <div class="form-check form-switch">-->
+<!--                            <input class="form-check-input" type="checkbox" id="reminders">-->
+<!--                            <label class="form-check-label" for="reminders"></label>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Privacy Section &ndash;&gt;-->
+<!--            <div id="privacy" class="settings-section">-->
+<!--                <h2 class="section-title">Privacy Settings</h2>-->
+
+<!--                <div class="form-card">-->
+<!--                    <h3>Data Privacy</h3>-->
+
+<!--                    <div class="mb-3">-->
+<!--                        <label for="dataRetention" class="form-label">Data Retention Period</label>-->
+<!--                        <select class="form-select" id="dataRetention">-->
+<!--                            <option value="30">30 days</option>-->
+<!--                            <option value="90" selected>90 days</option>-->
+<!--                            <option value="365">1 year</option>-->
+<!--                            <option value="forever">Indefinitely</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+
+<!--                    <div class="form-check mb-3">-->
+<!--                        <input class="form-check-input" type="checkbox" id="dataCollection">-->
+<!--                        <label class="form-check-label" for="dataCollection">-->
+<!--                            Allow anonymous data collection to help improve our services-->
+<!--                        </label>-->
+<!--                    </div>-->
+
+<!--                    <div class="form-check">-->
+<!--                        <input class="form-check-input" type="checkbox" id="personalizedAds">-->
+<!--                        <label class="form-check-label" for="personalizedAds">-->
+<!--                            Allow personalized ads based on my activity-->
+<!--                        </label>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="form-card">-->
+<!--                    <h3>Account Visibility</h3>-->
+
+<!--                    <div class="mb-3">-->
+<!--                        <label class="form-label">Profile Visibility</label>-->
+<!--                        <div class="form-check">-->
+<!--                            <input class="form-check-input" type="radio" name="profileVisibility" id="visibilityPublic" checked>-->
+<!--                            <label class="form-check-label" for="visibilityPublic">-->
+<!--                                Public - Anyone can see my profile-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        <div class="form-check">-->
+<!--                            <input class="form-check-input" type="radio" name="profileVisibility" id="visibilityPrivate">-->
+<!--                            <label class="form-check-label" for="visibilityPrivate">-->
+<!--                                Private - Only approved followers can see my profile-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="form-card">-->
+<!--                    <h3>Data Export & Deletion</h3>-->
+<!--                    <p>You can request an export of your data or delete your account entirely.</p>-->
+
+<!--                    <div class="d-flex gap-2">-->
+<!--                        <button class="btn btn-outline-primary">-->
+<!--                            <i class="fas fa-download me-2"></i> Export Data-->
+<!--                        </button>-->
+<!--                        <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">-->
+<!--                            <i class="fas fa-trash-alt me-2"></i> Delete Account-->
+<!--                        </button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Preferences Section &ndash;&gt;-->
+<!--            <div id="preferences" class="settings-section">-->
+<!--                <h2 class="section-title">Preferences</h2>-->
+
+<!--                <div class="form-card">-->
+<!--                    <h3>Language & Region</h3>-->
+
+<!--                    <div class="row mb-3">-->
+<!--                        <div class="col-md-6">-->
+<!--                            <label for="language" class="form-label">Language</label>-->
+<!--                            <select class="form-select" id="language">-->
+<!--                                <option value="en" selected>English</option>-->
+<!--                                <option value="es">Spanish</option>-->
+<!--                                <option value="fr">French</option>-->
+<!--                                <option value="de">German</option>-->
+<!--                                <option value="ja">Japanese</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-6">-->
+<!--                            <label for="timezone" class="form-label">Timezone</label>-->
+<!--                            <select class="form-select" id="timezone">-->
+<!--                                <option value="-12">(GMT -12:00) Eniwetok, Kwajalein</option>-->
+<!--                                <option value="-11">(GMT -11:00) Midway Island, Samoa</option>-->
+<!--                                <option value="-10">(GMT -10:00) Hawaii</option>-->
+<!--                                <option value="-9">(GMT -9:00) Alaska</option>-->
+<!--                                <option value="-8">(GMT -8:00) Pacific Time (US & Canada)</option>-->
+<!--                                <option value="-5" selected>(GMT -5:00) Eastern Time (US & Canada)</option>-->
+<!--                                <option value="0">(GMT) Greenwich Mean Time</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="mb-3">-->
+<!--                        <label for="dateFormat" class="form-label">Date Format</label>-->
+<!--                        <select class="form-select" id="dateFormat">-->
+<!--                            <option value="MM/DD/YYYY">MM/DD/YYYY</option>-->
+<!--                            <option value="DD/MM/YYYY">DD/MM/YYYY</option>-->
+<!--                            <option value="YYYY-MM-DD">YYYY-MM-DD</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="form-card">-->
+<!--                    <h3>Appearance</h3>-->
+
+<!--                    <div class="mb-3">-->
+<!--                        <label class="form-label">Theme</label>-->
+<!--                        <div class="d-flex gap-3">-->
+<!--                            <div class="form-check">-->
+<!--                                <input class="form-check-input" type="radio" name="theme" id="themeLight" checked>-->
+<!--                                <label class="form-check-label" for="themeLight">-->
+<!--                                    <i class="fas fa-sun me-1"></i> Light-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <div class="form-check">-->
+<!--                                <input class="form-check-input" type="radio" name="theme" id="themeDark">-->
+<!--                                <label class="form-check-label" for="themeDark">-->
+<!--                                    <i class="fas fa-moon me-1"></i> Dark-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <div class="form-check">-->
+<!--                                <input class="form-check-input" type="radio" name="theme" id="themeAuto">-->
+<!--                                <label class="form-check-label" for="themeAuto">-->
+<!--                                    <i class="fas fa-desktop me-1"></i> Auto-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Delete Account Modal &ndash;&gt;-->
+<!--<div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-hidden="true">-->
+<!--    <div class="modal-dialog">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title">Delete Account</h5>-->
+<!--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--                <p>Are you sure you want to delete your account? This action cannot be undone.</p>-->
+<!--                <div class="mb-3">-->
+<!--                    <label for="deleteConfirm" class="form-label">Type "DELETE" to confirm</label>-->
+<!--                    <input type="text" class="form-control" id="deleteConfirm">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>-->
+<!--                <button type="button" class="btn btn-danger" id="confirmDelete">Delete Account</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>-->
+<!--</body>-->
+<!--</html>-->

@@ -16,17 +16,23 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private userRepo userRepo;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
+    public UserDetails loadUserByUsername(String loginInput) throws UsernameNotFoundException {
+        Users user;
 
-       Users user = userRepo.findByUsername(username);
-       if(user != null){
-         UserDetails userDetails =  User.builder()
-                   .username(user.getUsername())
-                   .password(user.getPassword())
-                    .roles(user.getRoles().toArray(new String[0]))
-                   .build();
-         return userDetails;
-       }
-       throw new UsernameNotFoundException("User not found with username: " + username);
+        if (loginInput.contains("@") && loginInput.contains(".")) {
+            user = userRepo.findByEmail(loginInput);
+        } else {
+            user = userRepo.findByUsername(loginInput);
+        }
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found: " + loginInput);
+        }
+
+        return User.builder()
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .roles(user.getRoles().toArray(new String[0]))
+                .build();
     }
 }

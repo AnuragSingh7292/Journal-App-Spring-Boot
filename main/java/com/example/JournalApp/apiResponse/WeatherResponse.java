@@ -7,7 +7,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class WeatherResponse {
 
@@ -15,13 +14,20 @@ public class WeatherResponse {
     public Wind wind;
     public String name;
 
-    public class Main{
+    @Getter
+    @Setter
+    public static class Main {
         public double temp;
+
         @JsonProperty("feels_like")
         public double feelsLike;
+
         public int humidity;
     }
-    public class Wind{
+
+    @Getter
+    @Setter
+    public static class Wind {
         public double speed;
     }
 }

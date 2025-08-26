@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile | MindScribe</title>
+  <link th:href="@{/css/profile.css}" rel="stylesheet">
+  <link th:href="@{/css/profileAction.css}" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<!-- Main Header -->
+<header class="main-header">
+  <a th:href="@{/home}" > <div class="header-logo">MindScribe</div> </a>
+
+  <div class="header-actions">
+    <button class="header-btn" onclick="window.location.href=`${BASE_PATH}dashboard`">
+      <i class="fas fa-home"></i>
+      Dashboard
+    </button>
+    <form th:action="@{/logout}" method="post">
+      <button type="submit" class="header-btn">
+        <i class="fas fa-sign-out-alt"></i>
+        Logout
+      </button>
+    </form>
+  </div>
+</header>
+
+<!-- Main Content -->
+<div class="profile-container">
+  <!-- Left Sidebar - Scrollable -->
+  <aside class="profile-sidebar">
+    <div class="sidebar-content">
+      <div class="profile-header">
+        <div class="avatar-container">
+          <img th:src="${user?.avatarUrl ?: '/images/avatar.jpg'}"
+               class="profile-avatar"
+               alt="Profile Avatar"
+               onerror="this.src='/images/avatar.jpg'">
+        </div>
+        <h2 class="profile-username" id="sidebarUsername" th:text="${user?.username}">Username</h2>
+        <p class="profile-email" id="sidebarEmail" th:text="${user?.email}">user@example.com</p>
+      </div>
+
+      <div class="profile-stats">
+        <div class="stat-card">
+          <span class="stat-value" id="totalJournals">0</span>
+          <span class="stat-label">Total Journals</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="publicJournals">0</span>
+          <span class="stat-label">Public Journals</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="privateJournals">0</span>
+          <span class="stat-label">Private Journals</span>
+        </div>
+      </div>
+
+      <nav class="profile-nav">
+
+        <a href="/Journal/profile"class="nav-link">
+          <i class="fas fa-user"></i>
+          <span>My Profile</span>
+        </a>
+
+        <a th:href="@{/edit-profile}" class="nav-link">
+          <i class="fas fa-edit"></i>
+          <span>Edit Profile</span>
+        </a>
+
+        <a href="#" class="nav-link" id="changePassBtn">
+          <i class="fas fa-key"></i>
+          <span>Change Password</span>
+        </a>
+
+        <a href="/settings" class="nav-link">
+          <i class="fas fa-cog"></i>
+          <span>Settings</span>
+        </a>
+
+        <a href="/help" class="nav-link">
+          <i class="fas fa-question-circle"></i>
+          <span>Help</span>
+        </a>
+
+        <!-- Logout Form styled as a nav-link -->
+        <form th:action="@{/logout}" method="post" class="nav-link">
+          <button type="submit" class="nav-link" style="background: none; border: none; cursor: pointer; text-align: left; padding: 0; color: red;">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </button>
+        </form>
+
+        <div class="nav-link" style="margin-top: auto;">
+          <i class="fas fa-info-circle"></i>
+          <span>Version 1.0.0</span>
+        </div>
+
+      </nav>
+    </div>
+  </aside>
+
+  <!-- Main Content - Scrollable -->
+
+  <div class="journal-page-container">
+    <div class="journal-header-fixed">
+      <div class="content-header">
+        <h1 class="content-title">My Journals</h1>
+        <button class="sidebar-button" id="newJournalButton">
+          <i class="fas fa-plus"></i>
+          <span>New Journal</span>
+        </button>
+      </div>
+    </div>
+
+  <main class="profile-content">
+    <div class="journals-grid" id="journalsContainer">
+          <div class="loading-spinner">
+            <i class="fas fa-spinner"></i>
+            <span>Loading journals...</span>
+          </div>
+        </div>
+  </main>
+  </div>
+
+  <!-- Journal Creation Modal -->
+  <div class="modal" id="journalModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Create New Journal</h3>
+        <button class="close-modal" id="closeModal">&times;</button>
+      </div>
+      <form id="journalForm">
+        <div class="form-group">
+          <label for="journalTitle">Title</label>
+          <input type="text" id="journalTitle" name="title" placeholder="What's your journal about?" required>
+        </div>
+        <div class="form-group">
+          <label for="journalContent">Content</label>
+          <textarea id="journalContent" name="content" rows="10" placeholder="Write your thoughts here..."></textarea>
+        </div>
+        <div class="form-options">
+          <div class="privacy-toggle">
+            <input type="checkbox" id="isPrivate" name="isPrivate">
+            <label for="isPrivate">
+              <span class="toggle-switch"></span>
+              <span class="toggle-label">Private Journal</span>
+            </label>
+          </div>
+          <div class="form-buttons">
+            <button type="button" class="cancel-button" id="cancelJournal">Cancel</button>
+            <button type="submit" class="save-button">Save Journal</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Journal Creation Modal -->
+  <div class="editModal" id="editJournalModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Update Journal</h3>
+        <button class="close-modal" id="editCloseModal">&times;</button>
+      </div>
+      <form id="editJournalForm">
+        <div class="form-group">
+          <label for="journalTitle">Title</label>
+          <input type="text" id="editJournalTitle" name="title" placeholder="What's your journal about?" required>
+        </div>
+        <div class="form-group">
+          <label for="journalContent">Content</label>
+          <textarea id="editJournalContent" name="content" rows="10" placeholder="Write your thoughts here..."></textarea>
+        </div>
+        <div class="form-options">
+          <div class="privacy-toggle">
+            <input type="checkbox" id="editIsPrivate" name="isPrivate">
+            <label for="editIsPrivate">
+              <span class="toggle-switch"></span>
+              <span class="toggle-label">Private Journal</span>
+            </label>
+          </div>
+          <div class="form-buttons">
+            <button type="button" class="cancel-button" id="editCancelJournal">Cancel</button>
+            <button type="submit" class="save-button">Update Journal</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+<!--  /* profile  edit from here */-->
+  <!-- change pass -->
+  <!-- change pass -->
+  <div class="changePassModal" id="changePassModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Change Password</h3>
+        <button class="close-modal" id="changePassCloseModal">&times;</button>
+      </div>
+      <form id="changePassForm">
+        <div class="form-group">
+          <label for="oldPass">Old Password</label>
+          <div class="password-input-container">
+            <input type="password" id="oldPass" name="oldPass" placeholder="Enter your Old Password" required>
+            <button type="button" class="toggle-password" data-target="oldPass">
+              <i class="eye-icon">👁️</i>
+            </button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="newPass">New Password</label>
+          <div class="password-input-container">
+            <input type="password" id="newPass" name="newPass" placeholder="Enter your New Password" required>
+            <button type="button" class="toggle-password" data-target="newPass">
+              <i class="eye-icon">👁️</i>
+            </button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="conPass">Confirm Password</label>
+          <div class="password-input-container">
+            <input type="password" id="conPass" name="conPass" placeholder="Enter your confirm Password" required>
+            <button type="button" class="toggle-password" data-target="conPass">
+              <i class="eye-icon">👁️</i>
+            </button>
+          </div>
+        </div>
+        <div class="form-buttons">
+          <button type="button" class="cancel-button" id="changePassCancelJournal">Cancel</button>
+          <button type="submit" class="save-button">Change Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+</div>
+
+
+<script>
+  const BASE_PATH = '/Journal/';
+</script>
+<script src="/js/profile.js" th:src="@{/js/profile.js}"></script>
+<script src="/js/saveJournal.js" th:src="@{/js/saveJournal.js}"></script>
+<script src="/js/ProfileAction.js" th:src="@{/js/ProfileAction.js}"></script>
+<script src="/js/profileChangePass.js" th:src="@{/js/profileChangePass.js}"></script>
+</body>
+</html>

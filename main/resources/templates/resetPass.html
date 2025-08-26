@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Reset with OTP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            background-image: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            padding: 25px;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            height: 2px;
+            background-color: #e0e0e0;
+            top: 50%;
+            left: 20px;
+            right: 20px;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .step {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step.active {
+            background-color: #2575fc;
+            color: white;
+        }
+
+        .step.completed {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #2575fc;
+            outline: none;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .timer {
+            text-align: center;
+            margin: 15px 0;
+            font-size: 14px;
+            color: #e53935;
+            font-weight: 500;
+        }
+
+        .resend-option {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .resend-option a {
+            color: #2575fc;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .message {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .error {
+            background-color: #ffebee;
+            color: #e53935;
+            border: 1px solid #e53935;
+        }
+
+        .success {
+            background-color: #e8f5e9;
+            color: #43a047;
+            border: 1px solid #43a047;
+        }
+
+        .info {
+            background-color: #e3f2fd;
+            color: #1976d2;
+            border: 1px solid #1976d2;
+        }
+
+        .password-strength {
+            margin-top: 8px;
+            height: 5px;
+            background-color: #eee;
+            border-radius: 3px;
+        }
+
+        .password-strength-fill {
+            height: 100%;
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .password-rules {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Password Reset</h1>
+        <p>Secure OTP verification process</p>
+    </div>
+
+    <div class="form-container">
+        <div class="step-indicator">
+            <div class="step active">1</div>
+            <div class="step">2</div>
+            <div class="step">3</div>
+        </div>
+
+        <div class="message error" id="errorMessage"></div>
+        <div class="message success" id="successMessage"></div>
+        <div class="message info" id="infoMessage"></div>
+
+        <!-- Step 1: User Identification -->
+        <form class="form-step active" id="step1">
+            <div class="input-group">
+                <label for="userIdentifier">Email or Username</label>
+                <input type="text" id="userIdentifier" placeholder="Enter your email or username" required>
+            </div>
+            <button type="button" class="btn" onclick="sendOTP()">Send OTP</button>
+        </form>
+
+        <!-- Step 2: OTP Verification -->
+        <form class="form-step" id="step2">
+            <div class="input-group">
+                <label for="otp">Enter OTP</label>
+                <input type="text" id="otp" placeholder="Enter 6-digit OTP" maxlength="6" required>
+            </div>
+            <div class="timer" id="timer">01:00</div>
+            <button type="button" class="btn" onclick="verifyOTP()">Verify OTP</button>
+            <div class="resend-option">
+                Didn't receive OTP? <a onclick="resendOTP()">Resend</a>
+            </div>
+        </form>
+
+        <!-- Step 3: Password Update -->
+        <form class="form-step" id="step3">
+            <div class="input-group">
+                <label for="newPassword">New Password</label>
+                <input type="password" id="newPassword" placeholder="Enter new password" required>
+                <div class="password-strength">
+                    <div class="password-strength-fill" id="passwordStrength"></div>
+                </div>
+                <div class="password-rules">
+                    Use at least 8 characters with a mix of letters, numbers & symbols
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+            </div>
+            <button type="button" class="btn" onclick="updatePassword()">Update Password</button>
+        </form>
+    </div>
+</div>
+<script> BASE_PATH = "/Journal/" </script>
+
+<script src="/js/resetPass.js" th:src="@{/js/resetPass.js}"></script>
+</body>
+</html>

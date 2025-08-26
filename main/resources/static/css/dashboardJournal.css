@@ -1,0 +1,356 @@
+/* Variables */
+:root {
+    --card-bg: #ffffff;
+    --border-color: #e0e0e0;
+    --text-color: #333333;
+    --text-muted: #666666;
+    --text-muted-light: #999999;
+    --primary-color: #3b82f6;
+    --primary-dark: #2563eb;
+    --border-radius: 8px;
+}
+
+/* Loading Message  before  load the journal*/
+.loading-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem;
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+#rotate {
+    display: inline-block;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}
+
+
+.loading-message i {
+    font-size: 2rem;
+    color: var(--primary-color);
+}
+
+.loading-message span {
+    font-size: 1.1rem;
+}
+
+
+/* Journal Cards Container */
+.journals-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Journal Card - Compact Layout */
+.journal-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 1.2rem;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    transition: all 0.25s ease;
+    word-wrap: break-word;
+    overflow: hidden;
+    display: flex; /* Add this */
+    flex-direction: column; /* Add this */
+    height: 100%; /* Ensures consistent height */
+}
+
+.journal-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 12px rgba(0,0,0,0.12);
+}
+
+/* Header Row */
+.journal-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+    align-items: flex-start;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    max-width: 70%;
+}
+
+.avatar-sm {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #7eceff;
+}
+
+.user-info span {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4; /* ✅ ensures descenders (g, y, j, p, q) are not cut off */
+    display: inline-block; /* ✅ avoids flexbox compressing text vertically */
+    word-break: break-all; /* More aggressive breaking */
+}
+
+
+#worldIcon
+{
+    color: #1DA1F2;
+}
+
+.journal-date {
+    font-size: 0.82rem;
+    color: #616161;
+    text-align: right;
+}
+
+.journal-time {
+    font-size: 0.78rem;
+    color: #8e8e8e;
+    display: block;
+    margin-top: 0.2rem;
+}
+
+/* Content Area */
+.journal-title {
+    font-size: 1.15rem;
+    margin: 0.4rem 0 0.8rem 0;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--text-color);
+    word-break: break-word; /* Ensures long words break */
+    overflow-wrap: break-word; /* Alternative for better support */
+}
+
+.journal-content {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin: 0.6rem 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+    flex-grow: 1; /* This makes the content expand and push footer down */
+}
+
+/* Footer */
+.journal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+    margin-top: auto; /* This pushes the footer to the bottom */
+}
+
+.read-more {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0.3rem 0;
+    transition: all 0.2s ease;
+}
+
+.read-more:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+.journal-actions {
+    display:flex;
+    gap: 0.1rem;
+}
+
+.journal-action {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.84rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    transition: all 0.2s ease;
+    padding: 0.3rem 0.3rem;
+}
+
+.journal-action:hover {
+    color: var(--primary-color);
+}
+
+.journal-action i {
+    font-size: 0.9rem;
+}
+
+
+/* Pagination Container */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 2rem 0;
+    width: 100%;
+}
+
+/* Pagination Buttons (Previous/Next) */
+.pagination-button {
+    padding: 0.6rem 1.1rem;
+    background-color: var(--white);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.pagination-button:hover:not(:disabled) {
+    background-color: var(--hover-bg);
+    border-color: var(--primary-light);
+    color: var(--primary-color);
+}
+
+.pagination-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: var(--light-gray);
+}
+
+/* Page Numbers Container */
+.page-numbers {
+    display: flex;
+    gap: 0.4rem;
+    margin: 0 0.4rem;
+}
+
+/* Individual Page Number */
+.page-number {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-color);
+    background-color: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.page-number:hover:not(.active) {
+    background-color: var(--hover-bg);
+    border-color: var(--border-color);
+}
+
+.page-number.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Pagination Icons */
+.pagination-button i {
+    font-size: 0.8rem;
+}
+
+
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .pagination-container {
+        gap: 0.5rem;
+    }
+
+    .pagination-button {
+        padding: 0.6rem 1rem;
+    }
+
+    .page-number {
+        min-width: 32px;
+        height: 32px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Ensure these variables are defined in your :root */
+:root {
+    --white: #ffffff;
+    --text-color: #333333;
+    --border-color: #e0e0e0;
+    --primary-color: #4a6fa5;
+    --primary-light: #e1e8f0;
+    --hover-bg: #f5f5f5;
+    --light-gray: #f0f0f0;
+    --border-radius: 6px;
+}
+
+
+/* Overlay Styles (Keep your existing styles) */
+.journal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+/* Empty State and Error Message (Keep your existing styles) */
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-muted);
+}
+
+/* Add these variables if not already defined */
+:root {
+    --card-bg: #ffffff;
+    --border-color: #e0e0e0;
+    --primary-color: #4a6fa5;
+    --primary-light: #e1e8f0;
+    --primary-dark: #3a5a80;
+    --danger-color: #e74c3c;
+    --text-color: #333333;
+    --text-muted: #666666;
+    --text-muted-light: #999999;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+    --hover-bg: #f5f5f5;
+    --tag-bg: #f0f0f0;
+}

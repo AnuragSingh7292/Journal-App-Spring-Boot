@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/images/favicon-32x32.png}" rel="icon" type="image/x-icon">
+    <title>MindScribe | Professional Journal App</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+</head>
+
+<body>
+<header class="header">
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-book-open"></i>
+                <a th:href="@{/home}"><span>MindScribe</span></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <a th:href="@{/login}" class="btn login">Log In</a>
+                <a th:href="@{/signup}" class="btn signup">Sign Up</a>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1>Your Thoughts, Organized Beautifully</h1>
+            <p>MindScribe helps you capture your ideas, reflections, and daily experiences in a secure, intuitive
+                journaling platform designed for professionals.</p>
+            <div class="hero-buttons">
+                <!-- Both buttons point to the same endpoint -->
+                <a th:href="@{/dashboard}" class="btn primary">Start Journaling Today</a>
+                <a th:href="@{/dashboard}" class="btn secondary">Watch Demo</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img th:src="@{/images/landing_pic1.png}" alt="Journal App Interface">
+        </div>
+    </div>
+</section>
+
+<section id="features" class="features">
+    <div class="container">
+        <h2 class="section-title">Powerful Features</h2>
+        <p class="section-subtitle">Everything you need for meaningful journaling</p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>End-to-End Encryption</h3>
+                <p>Your private thoughts stay private with military-grade encryption protecting every entry.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Cross-Platform Sync</h3>
+                <p>Access your journal from any device, with seamless synchronization across all platforms.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Mood Tracking</h3>
+                <p>Visualize your emotional patterns with our built-in mood tracking and analytics.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>Smart Search</h3>
+                <p>Find any entry instantly with our powerful search and tagging system.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <h3>Custom Themes</h3>
+                <p>Personalize your writing experience with beautiful, customizable themes.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <h3>Cloud Backup</h3>
+                <p>Automatic backups ensure your memories are never lost, even if your device is.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="showcase">
+    <div class="container">
+        <div class="showcase-image">
+            <img th:src="@{/images/landing_pic2.png}" alt="App Screenshot">
+        </div>
+        <div class="showcase-content">
+            <h2>Designed for Deep Reflection</h2>
+            <p>MindScribe's clean, distraction-free interface helps you focus on what matters - your thoughts. With
+                customizable writing environments and thoughtful design elements, we've created the perfect space
+                for your mind to unfold.</p>
+
+            <div class="showcase-features">
+                <div class="showcase-feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Minimalist writing interface</span>
+                </div>
+                <div class="showcase-feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Focus mode for distraction-free writing</span>
+                </div>
+                <div class="showcase-feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Dark mode for nighttime journaling</span>
+                </div>
+                <div class="showcase-feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Customizable fonts and spacing</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="testimonials" class="testimonials">
+    <div class="container">
+        <h2 class="section-title">Trusted by Professionals Worldwide</h2>
+        <p class="section-subtitle">Join thousands who have transformed their journaling experience</p>
+
+        <div class="testimonial-cards">
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <p>"MindScribe has completely changed how I reflect on my work and personal growth. The ability
+                        to search past entries has been invaluable for tracking my professional development."</p>
+                </div>
+                <div class="testimonial-author">
+                    <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="Sarah J.">
+                    <div>
+                        <h4>Sarah J.</h4>
+                        <span>Marketing Director</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <p>"As a therapist, I recommend MindScribe to all my clients. The mood tracking features provide
+                        incredible insights into emotional patterns and growth over time."</p>
+                </div>
+                <div class="testimonial-author">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Dr. Michael T.">
+                    <div>
+                        <h4>Dr. Michael T.</h4>
+                        <span>Clinical Psychologist</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <p>"I've tried every journal app out there, but MindScribe's perfect balance of simplicity and
+                        powerful features makes it the only one I've stuck with long-term."</p>
+                </div>
+                <div class="testimonial-author">
+                    <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Priya K.">
+                    <div>
+                        <h4>Priya K.</h4>
+                        <span>Software Engineer</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="pricing" class="pricing">
+    <div class="container">
+        <h2 class="section-title">Simple, Transparent Pricing</h2>
+        <p class="section-subtitle">Choose the plan that fits your journaling needs</p>
+
+        <div class="pricing-cards">
+            <div class="pricing-card">
+                <h3>Basic</h3>
+                <div class="price">
+                    <span class="amount">$0</span>
+                    <span class="period">/month</span>
+                </div>
+                <ul class="features-list">
+                    <li><i class="fas fa-check"></i> 100 entries</li>
+                    <li><i class="fas fa-check"></i> Basic mood tracking</li>
+                    <li><i class="fas fa-check"></i> 3 themes</li>
+                    <li><i class="fas fa-check"></i> Email support</li>
+                </ul>
+                <button class="btn outline">Get Started</button>
+            </div>
+
+            <div class="pricing-card featured">
+                <div class="popular-badge">Most Popular</div>
+                <h3>Pro</h3>
+                <div class="price">
+                    <span class="amount">$8</span>
+                    <span class="period">/month</span>
+                </div>
+                <ul class="features-list">
+                    <li><i class="fas fa-check"></i> Unlimited entries</li>
+                    <li><i class="fas fa-check"></i> Advanced analytics</li>
+                    <li><i class="fas fa-check"></i> 10+ themes</li>
+                    <li><i class="fas fa-check"></i> Priority support</li>
+                    <li><i class="fas fa-check"></i> PDF exports</li>
+                </ul>
+                <button class="btn primary">Start Free Trial</button>
+            </div>
+
+            <div class="pricing-card">
+                <h3>Team</h3>
+                <div class="price">
+                    <span class="amount">$15</span>
+                    <span class="period">/user/month</span>
+                </div>
+                <ul class="features-list">
+                    <li><i class="fas fa-check"></i> All Pro features</li>
+                    <li><i class="fas fa-check"></i> Team administration</li>
+                    <li><i class="fas fa-check"></i> Shared journals</li>
+                    <li><i class="fas fa-check"></i> Dedicated account manager</li>
+                </ul>
+                <button class="btn outline">Contact Sales</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contact" class="cta">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Ready to transform your journaling experience?</h2>
+            <p>Join thousands of professionals who use MindScribe to reflect, grow, and organize their thoughts.</p>
+        </div>
+        <div class="cta-form">
+            <form>
+                <input type="email" placeholder="Enter your email">
+                <button type="submit" class="btn primary">Get Started</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo">
+                    <i class="fas fa-book-open"></i>
+                    <span>MindScribe</span>
+                </div>
+                <p>Your thoughts deserve a beautiful home. MindScribe helps you capture, reflect, and grow.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/anuragkumar180/"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Integrations</a></li>
+                    <li><a href="#">Roadmap</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Guides</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Journaling Tips</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 MindScribe. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script th:src="@{/js/script.js}"></script>
+</body>
+
+</html>

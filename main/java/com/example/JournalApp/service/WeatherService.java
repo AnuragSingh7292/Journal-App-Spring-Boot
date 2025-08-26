@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 public class WeatherService {
 
     // hardcoded
-//    private static final String apiKey = "9ea33fc4b42f6101f239144bbcf46636";
+//    private static final String apiKey = "9ea33fc4b42f6101***************************";
 //    @Value("${weather.api.key}") // its coming from the application.yml
 //    private String apiKey;
 
@@ -32,7 +32,7 @@ public class WeatherService {
 //        return body;
 //    }
 
-//    by using the  app cache memory
+    //    by using the  app cache memory
     public WeatherResponse getWeather(String city) {
 
         String baseAPI = appCache.getCache().get("Weather_API");
@@ -44,6 +44,7 @@ public class WeatherService {
         String finalAPI = baseAPI.replace("<city>", city).replace("<apiKey>", apiKey).trim();
 //        System.out.println("Final API URL: " + finalAPI);
 
+//        System.out.println(finalAPI);
         // Normalize whitespace and encoding
         finalAPI = finalAPI.replaceAll("\\s+", "");  // Remove hidden spaces
         ResponseEntity<WeatherResponse> response = restTemplate.exchange(finalAPI, HttpMethod.GET, null, WeatherResponse.class);

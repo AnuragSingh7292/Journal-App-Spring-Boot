@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindScribe - Your Journal Dashboard</title>
+  <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+  <link th:href="@{/css/dashboardJournal.css}" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<!-- Top Navigation Bar -->
+<header class="navbar">
+  <div class="logo-container">
+    <a th:href="@{/home}" class="logo-link">
+      <div class="logo">MindScribe</div>
+    </a>
+    <div class="nav-links">
+      <a href="" class="nav-link active" id="allJournalsLink">All Journals</a>
+      <a href="#" class="nav-link" id="myJournalsLink"></a>
+    </div>
+  </div>
+
+  <div class="search-container">
+    <i class="fas fa-search search-icon"></i>
+    <input type="text" id="searchInput" placeholder="Search by username...">
+    <div id="suggestionsBox" class="suggestions-dropdown"></div>
+  </div>
+
+  <div class="user-dropdown">
+    <div class="user-info">
+      <!-- Final Working Solution -->
+<!--      <img th:src='@{/images/avatar.jpg}' class="avatar" alt="User Avatar">-->
+      <img th:src="@{${user.avatarUrl}}"
+           class="avatar"
+           alt="User Avatar">
+
+      <!-- Safe username display -->
+      <span class="username">
+            <th:block th:if="${user != null}" th:text="${user.username}">User</th:block>
+            <th:block th:unless="${user != null}">Guest</th:block>
+        </span>
+
+      <i class="fas fa-chevron-down dropdown-arrow"></i>
+    </div>
+
+    <!-- Authenticated User Menu -->
+    <div class="dropdown-menu" th:if="${user != null}">
+      <a th:href="@{/profile}" class="dropdown-item">
+      <i class="fas fa-user"></i>
+        <span>Profile</span>
+      </a>
+
+      <a th:href="@{/profile}" class="dropdown-item">
+        <i class="fas fa-book-open"></i>
+        <span>My journals</span>
+      </a>
+
+      <a href="/settings" class="dropdown-item">
+        <i class="fas fa-cog"></i>
+        <span>Settings</span>
+      </a>
+      <div class="dropdown-divider"></div>
+      <form th:action="@{/logout}" method="post" class="dropdown-item-form">
+        <button type="submit" class="dropdown-item-button">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+</header>
+
+<!-- Main Content Area -->
+<div class="dashboard-container">
+
+  <!-- Left Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-fixed">
+      <button class="sidebar-button" id="newJournalButton">
+        <i class="fas fa-plus"></i>
+        <span>New Journal</span>
+      </button>
+
+      <!-- New Search Bar -->
+      <div class="sidebar-search">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search by Title..." id="searchJournalInput">
+        <div id="suggestionsBoxTitle"></div>
+      </div>
+    </div>
+
+    <div class="sidebar-scrollable">
+
+      <!-- Filters -->
+      <div class="sidebar-section">
+        <div class="section-header">
+          <h3 class="sidebar-title">Filters</h3>
+          <button class="section-clear">Clear all</button>
+        </div>
+
+        <!--      /* for soting */-->
+        <div class="sort-options">
+          <select id="sortSelect">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+          </select>
+        </div>
+
+        <div class="filter-option active" data-filter="recent">
+          <i class="fas fa-clock"></i>
+          <span>Most Recent</span>
+        </div>
+        <div class="filter-option" data-filter="favorites">
+          <i class="fas fa-star"></i>
+          <span>Favorites</span>
+        </div>
+        <div class="filter-option" data-filter="images">
+          <i class="fas fa-image"></i>
+          <span>With Images</span>
+        </div>
+      </div>
+
+      <!-- Tags Cloud -->
+      <div class="sidebar-section">
+        <div class="section-header">
+          <h3 class="sidebar-title">Tags Cloud</h3>
+          <button class="section-add">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <div class="tags-cloud">
+          <div class="tag active">#Reflections</div>
+          <div class="tag">#Ideas</div>
+          <div class="tag">#Travel</div>
+          <div class="tag">#Dreams</div>
+          <div class="tag">#Goals</div>
+          <div class="tag">#Memories</div>
+          <div class="tag">#Work</div>
+          <div class="tag">#Inspiration</div>
+          <div class="tag">#Creativity</div>
+        </div>
+      </div>
+
+      <!-- Date Filter -->
+      <div class="sidebar-section">
+        <h3 class="sidebar-title">Date Range</h3>
+        <div class="date-filter">
+          <div class="date-input">
+            <label>From</label>
+            <input type="date" id="dateFrom">
+          </div>
+          <div class="date-input">
+            <label>To</label>
+            <input type="date" id="dateTo">
+          </div>
+        </div>
+      </div>
+
+      <!-- Mood Tracker -->
+      <div class="sidebar-section">
+        <h3 class="sidebar-title">Mood Trends</h3>
+        <div class="mood-tracker">
+          <div class="mood-bar happy" style="height: 70%">
+            <span>Happy</span>
+          </div>
+          <div class="mood-bar neutral" style="height: 40%">
+            <span>Neutral</span>
+          </div>
+          <div class="mood-bar sad" style="height: 20%">
+            <span>Sad</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="sidebar-section">
+        <h3 class="sidebar-title">This Week</h3>
+        <div class="quick-stats">
+          <div class="stat-item">
+            <i class="fas fa-pen"></i>
+            <span>5 Entries</span>
+          </div>
+          <div class="stat-item">
+            <i class="fas fa-clock"></i>
+            <span>3.5h Writing</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Journal Feed -->
+  <main class="journal-feed">
+    <div class="feed-scrollable">
+      <div class="journals-container" id="journalsContainer">
+        <!-- Journal cards will be dynamically inserted here -->
+        <div class="loading-message">
+          <i class="fas fa-spinner fa-spin" id="rotate"></i>
+          <span>Loading journals....</span>
+        </div>
+      </div>
+
+      <div class="pagination-container">
+        <button class="pagination-button" id="prevPage"><i class="fas fa-chevron-left"></i> Previous</button>
+        <div class="page-numbers" id="pageNumbers"></div>
+        <button class="pagination-button" id="nextPage">Next <i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Right Sidebar -->
+  <aside class="right-sidebar">
+    <div class="right-sidebar-scrollable">
+      <!-- Simplified Dark Mode Toggle -->
+      <button class="theme-toggle-button" id="themeButton">
+        <i class="fas fa-moon"></i>
+        <span>Dark Mode</span>
+      </button>
+
+      <!-- Weather Widget (same layout but compact) -->
+      <div class="weather-card">
+        <div class="weather-header">
+          <i class="fas fa-map-marker-alt"></i>
+          <h3 class="location-name">Current Location</h3>
+        </div>
+        <div class="weather-content">
+          <div class="weather-icon">
+            <i class="fas fa-sun"></i>
+          </div>
+          <div class="weather-details">
+            <span class="temperature">24°C</span>
+            <span class="weather-condition">Sunny</span>
+          </div>
+        </div>
+        <div class="weather-footer">
+          <div class="weather-stat">
+            <i class="fas fa-wind"></i>
+            <span>12 km/h</span>
+          </div>
+          <div class="weather-stat">
+            <i class="fas fa-tint"></i>
+            <span>45%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Community Activity -->
+      <div class="community-activity">
+        <h3><i class="fas fa-users"></i> Community Pulse</h3>
+        <div class="activity-item">
+          <i class="fas fa-pencil-alt"></i>
+          <span>12 new journals today</span>
+        </div>
+        <div class="activity-item">
+          <i class="fas fa-user-plus"></i>
+          <span>5 new members joined</span>
+        </div>
+      </div>
+
+      <!-- Public Journal Highlights -->
+      <div class="public-highlights">
+        <h3><i class="fas fa-fire"></i> Trending Now</h3>
+        <div class="highlight-item">
+          <div class="highlight-avatar">
+            <img src="/Journal/images/avatar.jpg" alt="User" class="avatar-xs">
+          </div>
+          <div class="highlight-content">
+            <span class="highlight-author">TravelWriter</span>
+            <span class="highlight-title">My Bali Adventure</span>
+            <div class="highlight-stats">
+              <span><i class="fas fa-heart"></i> 142</span>
+              <span><i class="fas fa-comment"></i> 28</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- Journal Creation Modal -->
+<div class="modal" id="journalModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Create New Journal</h3>
+      <button class="close-modal" id="closeModal">&times;</button>
+    </div>
+    <form id="journalForm">
+      <div class="form-group">
+        <label for="journalTitle">Title</label>
+        <input type="text" id="journalTitle" name="title" placeholder="What's your journal about?" required>
+      </div>
+      <div class="form-group">
+        <label for="journalContent">Content</label>
+        <textarea id="journalContent" name="content" rows="10" placeholder="Write your thoughts here..."></textarea>
+      </div>
+      <div class="form-options">
+        <div class="privacy-toggle">
+          <input type="checkbox" id="isPrivate" name="isPrivate">
+          <label for="isPrivate">
+            <span class="toggle-switch"></span>
+            <span class="toggle-label">Private Journal</span>
+          </label>
+        </div>
+        <div class="form-buttons">
+          <button type="button" class="cancel-button" id="cancelJournal">Cancel</button>
+          <button type="submit" class="save-button">Save Journal</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- overlay open the card -->
+<div id="overlayContainer" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh;
+    background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:10000; overflow:auto;">
+  <div id="overlayCardContainer" style="background:white; border-radius:8px; max-width:90vw; max-height:90vh; overflow:auto; position:relative; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+    <button id="overlayCloseBtn" style="position:absolute; top:10px; right:10px; font-size:28px; background:none; border:none; cursor:pointer;">×</button>
+  </div>
+</div>
+
+
+
+<script>
+  const BASE_PATH = '/Journal/';
+</script>
+
+<script src="/js/dashboard.js" th:src="@{/js/dashboard.js}"></script>
+<script src="/js/saveJournal.js" th:src="@{/js/saveJournal.js}"></script>
+<!--<script src="/js/weather.js" th:src="@{/js/weather.js}"></script>-->
+<script src="/js/dashboardSearch.js" th:src="@{/js/dashboardSearch.js}"></script>
+<script src="/js/dashboardFilter.js" th:src="@{/js/dashboardFilter.js}"></script>
+
+
+
+
+
+</body>
+</html>

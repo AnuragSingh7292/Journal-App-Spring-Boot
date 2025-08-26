@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile | Account Settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 20px;
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            height: fit-content;
+        }
+
+        .user-info {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #e6e6e6;
+            margin: 0 auto 15px;
+            display: block;
+        }
+
+        .change-avatar-btn {
+            display: inline-block;
+            margin-top: 10px;
+            color: #4a6cf7;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .user-info h2 {
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: #2d3748;
+        }
+
+        .user-info p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-bottom: 10px;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: #4a5568;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .nav-links a.active, .nav-links a:hover {
+            background: #4a6cf7;
+            color: white;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 24px;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .page-header p {
+            color: #718096;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            color: #2d3748;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e6e6e6;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e6e6e6;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #4a6cf7;
+            box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+        }
+
+        .form-hint {
+            font-size: 13px;
+            color: #718096;
+            margin-top: 5px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #4a6cf7;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3456e0;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #e6e6e6;
+            color: #4a5568;
+        }
+
+        .btn-outline:hover {
+            background: #f8f9fa;
+        }
+
+        .otp-section {
+            display: none;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .otp-inputs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .otp-input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 18px;
+            border: 1px solid #e6e6e6;
+            border-radius: 8px;
+        }
+
+        .avatar-options {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .avatar-option {
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .avatar-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e6e6e6;
+            margin-bottom: 8px;
+        }
+
+        .avatar-option.active .avatar-preview {
+            border-color: #4a6cf7;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e6e6e6;
+        }
+
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="sidebar">
+        <div class="user-info">
+            <img th:src="${user.avatarUrl} ?: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80'"
+                 alt="User Avatar" class="avatar" id="currentAvatar">
+            <span class="change-avatar-btn" onclick="document.getElementById('avatarUpload').click()">
+                    <i class="fas fa-camera"></i> Change Photo
+                </span>
+            <h2 th:text="${user.username} ?: 'John Doe'">John Doe</h2>
+            <p th:text="${user.email} ?: 'john.doe@example.com'">john.doe@example.com</p>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="#" class="active"><i class="fas fa-user"></i> Edit Profile</a></li>
+            <li><a href="#"><i class="fas fa-lock"></i> Security</a></li>
+            <li><a href="#"><i class="fas fa-bell"></i> Notifications</a></li>
+            <li><a href="#"><i class="fas fa-shield-alt"></i> Privacy</a></li>
+            <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h1>Edit Profile</h1>
+            <p>Manage your account settings and preferences</p>
+        </div>
+
+        <div class="alert" id="alertBox"></div>
+
+        <form id="profileForm">
+            <div class="form-section">
+                <h3 class="section-title">Profile Information</h3>
+
+                <div class="form-group">
+<!--                    <label for="avatar">Profile Photo</label>-->
+                    <div class="avatar-options">
+                        <div class="avatar-option active" data-avatar="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80">
+                            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80"
+                                 alt="Current Avatar" class="avatar-preview">
+                            <div>Current</div>
+                        </div>
+                        <div class="avatar-option" data-avatar="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80">
+                            <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80"
+                                 alt="Avatar 1" class="avatar-preview">
+                            <div>Option 1</div>
+                        </div>
+                        <div class="avatar-option" data-avatar="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80">
+                            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80"
+                                 alt="Avatar 2" class="avatar-preview">
+                            <div>Option 2</div>
+                        </div>
+                        <div class="avatar-option" data-avatar="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80">
+                            <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80"
+                                 alt="Avatar 3" class="avatar-preview">
+                            <div>Option 3</div>
+                        </div>
+                    </div>
+                    <p class="form-hint">You can also upload a new photo</p>
+                    <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+                    <button type="button" class="btn btn-outline" style="margin-top: 10px;" onclick="document.getElementById('avatarUpload').click()">
+                        <i class="fas fa-upload"></i> Upload New Photo
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" class="form-control" th:value="${user.username} ?: 'johndoe'">
+                    <p class="form-hint">Username can be changed once every 30 days</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" class="form-control" th:value="${user.fullName} ?: 'John Doe'">
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3 class="section-title">Contact Information</h3>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-control" th:value="${user.email} ?: 'john.doe@example.com'">
+                    <p class="form-hint">We'll send a verification code if you change your email</p>
+                </div>
+
+                <div class="otp-section" id="otpSection">
+                    <h4>Verify Your New Email</h4>
+                    <p>We've sent a 6-digit code to <span id="newEmailValue">new.email@example.com</span></p>
+
+                    <div class="otp-inputs">
+                        <input type="text" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 1)">
+                        <input type="text" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 2)">
+                        <input type="text" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 3)">
+                        <input type="text" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 4)">
+                        <input type="text" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 5)">
+                        <input type="text" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 6)">
+                    </div>
+
+                    <button type="button" class="btn btn-primary" id="verifyOtpBtn">Verify Code</button>
+                    <button type="button" class="btn btn-outline" id="resendOtpBtn">Resend Code</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" class="form-control" th:value="${user.phone} ?: '+1 (555) 123-4567'">
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button type="button" class="btn btn-outline" id="cancelBtn">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Current user data (would come from backend in real application)
+    const currentUser = {
+        id: 123,
+        username: 'johndoe',
+        email: 'john.doe@example.com',
+        avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80',
+        fullName: 'John Doe',
+        phone: '+1 (555) 123-4567'
+    };
+
+    // DOM Elements
+    const emailInput = document.getElementById('email');
+    const originalEmail = emailInput.value;
+    const otpSection = document.getElementById('otpSection');
+    const alertBox = document.getElementById('alertBox');
+    const avatarOptions = document.querySelectorAll('.avatar-option');
+    const avatarUpload = document.getElementById('avatarUpload');
+    const currentAvatar = document.getElementById('currentAvatar');
+
+    // Email change with OTP flow
+    emailInput.addEventListener('change', function() {
+        if (this.value !== originalEmail) {
+            document.getElementById('newEmailValue').textContent = this.value;
+            otpSection.style.display = 'block';
+
+            // Simulate sending OTP to the new email
+            console.log('Sending OTP to new email:', this.value);
+            showAlert('Verification code sent to your new email address', 'success');
+        } else {
+            otpSection.style.display = 'none';
+        }
+    });
+
+    // Avatar selection
+    avatarOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            avatarOptions.forEach(opt => opt.classList.remove('active'));
+            this.classList.add('active');
+
+            const newAvatarUrl = this.dataset.avatar;
+            currentAvatar.src = newAvatarUrl;
+
+            console.log('Selected new avatar:', newAvatarUrl);
+            showAlert('Avatar changed successfully', 'success');
+        });
+    });
+
+    // Avatar upload handling
+    avatarUpload.addEventListener('change', function(e) {
+        if (this.files && this.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                // In a real application, you would upload this to your server
+                console.log('Uploading new avatar image:', avatarUpload.files[0].name);
+
+                // Simulate successful upload
+                setTimeout(() => {
+                    currentAvatar.src = e.target.result;
+                    showAlert('Avatar uploaded successfully', 'success');
+                }, 1000);
+            }
+
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+
+    // OTP input navigation
+    function moveToNext(input, nextIndex) {
+        if (input.value.length === 1) {
+            if (nextIndex <= 6) {
+                const nextInput = document.querySelector(`.otp-input:nth-child(${nextIndex})`);
+                if (nextInput) nextInput.focus();
+            }
+        }
+    }
+
+    // OTP verification
+    document.getElementById('verifyOtpBtn').addEventListener('click', function() {
+        const otpInputs = document.querySelectorAll('.otp-input');
+        let otpCode = '';
+
+        otpInputs.forEach(input => {
+            otpCode += input.value;
+        });
+
+        if (otpCode.length === 6) {
+            console.log('Verifying OTP code:', otpCode);
+
+            // Simulate OTP verification
+            setTimeout(() => {
+                showAlert('Email verified successfully', 'success');
+                otpSection.style.display = 'none';
+
+                // Update the original email to the new one
+                // originalEmail = emailInput.value;
+            }, 1000);
+        } else {
+            showAlert('Please enter the complete verification code', 'error');
+        }
+    });
+
+    // Resend OTP
+    document.getElementById('resendOtpBtn').addEventListener('click', function() {
+        console.log('Resending OTP to:', emailInput.value);
+        showAlert('Verification code sent again', 'success');
+    });
+
+    // Cancel button
+    document.getElementById('cancelBtn').addEventListener('click', function() {
+        // Reset form to original values
+        emailInput.value = originalEmail;
+        otpSection.style.display = 'none';
+
+        // Reset OTP inputs
+        document.querySelectorAll('.otp-input').forEach(input => {
+            input.value = '';
+        });
+
+        showAlert('Changes discarded', 'success');
+    });
+
+    // Form submission
+    document.getElementById('profileForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Collect form data
+        const formData = {
+            username: document.getElementById('username').value,
+            email: document.getElementById('email').value,
+            fullName: document.getElementById('fullName').value,
+            phone: document.getElementById('phone').value,
+            avatarUrl: currentAvatar.src
+        };
+
+        console.log('Submitting profile update:', formData);
+
+        // Simulate API call
+        setTimeout(() => {
+            showAlert('Profile updated successfully', 'success');
+        }, 1000);
+    });
+
+    // Show alert message
+    function showAlert(message, type) {
+        alertBox.textContent = message;
+        alertBox.className = `alert alert-${type}`;
+        alertBox.style.display = 'block';
+
+        // Hide alert after 3 seconds
+        setTimeout(() => {
+            alertBox.style.display = 'none';
+        }, 3000);
+    }
+</script>
+</body>
+</html>
